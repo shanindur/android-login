@@ -12,12 +12,15 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.spacebar.login.utils.SharedPreference;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
+    private SharedPreference preference;
 
     @BindView(R.id.input_email)
     EditText _emailText;
@@ -32,7 +35,16 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        preference = new SharedPreference(LoginActivity.this);
+
         ButterKnife.bind(this);
+
+        Toast.makeText(this, preference.getIsLogged()+"", Toast.LENGTH_SHORT).show();
+
+        if (preference.getIsLogged() == true){
+            onLoginSuccess();
+        }
         
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
@@ -109,6 +121,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
+        preference.setIsLogged(true);
         finish();
     }
 

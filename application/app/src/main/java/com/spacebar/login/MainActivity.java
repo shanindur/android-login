@@ -4,20 +4,46 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.spacebar.login.utils.SharedPreference;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class MainActivity extends AppCompatActivity {
+    private SharedPreference preference;
+    @BindView(R.id.btn_logout)
+    Button _logoutButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ButterKnife.bind(this);
+        preference = new SharedPreference(this);
 
-        Intent intent = new Intent(this, LoginActivity.class);
+        _logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               onLogout();
+            }
+        });
+
+
+    }
+
+    public void onLogout() {
+        preference.clearIsLogged();
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent);
+        finish();
     }
 
     @Override
